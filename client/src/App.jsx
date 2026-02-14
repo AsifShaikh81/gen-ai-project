@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from 'axios'
 
 export default function App() {
   const [text, setText] = useState(""); // for onchange
@@ -13,32 +14,51 @@ export default function App() {
     setText(e.target.value);
   };
 
+  useEffect(()=>{
+   
+  },[])
+
   useEffect(() => {
     localStorage.setItem("Message-key", JSON.stringify(message));
   }, [message]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if(!text.trim()) return
-    setMessage((prev) => [...prev, text]);
+    const userMessage = text
+    setMessage((prev) => [...prev, {role:"user", content:userMessage}]);
     setText("");
+    
+    //*fetching chatbot api 
+    try {
+      const response = await axios.post("http://localhost:3001/chat",{
+        message:userMessage
+      })
+
+      setMessage((prev)=>[
+        ...prev, {role:"assistant", content:response.data.message}
+      ])
+
+    } catch (error) {
+      console.log("Error",error.message)
+    }
+
   };
   // console.log(text)
   return (
     <div className="bg-neutral-950 overflow-x-hidden text-white min-h-screen ">
-      body
+      
       {/* chat container */}
       <div className="container mx-auto border-amber-100 max-w-3xl pb-44">
         {/* messages */}
 
-        {/* user message */}
+        {/* user & assistant message */}
         {message.map((msg, index) => (
-          <div className="my-6 bg-neutral-800 p-3 rounded-xl ml-auto max-w-fit">
-            {msg}
+          <div key={index} className={`my-6 p-3 rounded-xl max-w-fit ${msg.role ==="user"?"bg-neutral-800 ml-auto":"bg-green-800"}`}>
+            {msg.content}
           </div>
         ))}
 
-        {/* Assistatn message */}
-        <div className="max-w-fit">Assistant</div>
+        
 
         {/* bottom chatbox*/}
         <div className="fixed inset-x-0 bottom-0 flex justify-center bg-neutral-900">
