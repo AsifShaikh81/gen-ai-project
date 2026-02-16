@@ -1,6 +1,6 @@
 
 import express  from 'express'
-import { Generate } from './chatBot.js';
+import { chatBot } from './chatBot.js';
 import "./config.js" //for env
 import cors from 'cors'
 
@@ -18,11 +18,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/chat',async (req,res)=>{
-  console.log("full body",req.body)
-  const {message} = req.body
+  // console.log("full body",req.body)
+  const {message ,conversationId} = req.body
+  //* adding validation 
+ if(!message || !conversationId){
+   res.status(400).json({message:'All fields are reqired'})
+   return
+ }
 
-  console.log('Message', message)
-  const result = await Generate(message)
+
+  // console.log('Message', message)
+  const result = await chatBot(message, conversationId)
   res.json({message:result})
 })
 
