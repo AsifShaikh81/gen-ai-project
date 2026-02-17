@@ -40,10 +40,14 @@ export default function App() {
     //*fetching chatbot api
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3001/chat", {
+      const response = await axios.post("api/chat", {
         conversationId,
         message: userMessage
       });
+      /* const response = await axios.post("http://localhost:3001/chat", {
+        conversationId,
+        message: userMessage
+      }); */
       setLoading(false);
 
       setMessage((prev) => [

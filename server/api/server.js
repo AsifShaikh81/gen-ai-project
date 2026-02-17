@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   res.send('Hello from server');
 });
 
-app.post('/chat',async (req,res)=>{
+app.post('/api/chat',async (req,res)=>{
   // console.log("full body",req.body)
   const {message ,conversationId} = req.body
   //* adding validation 
@@ -31,7 +31,9 @@ app.post('/chat',async (req,res)=>{
   const result = await chatBot(message, conversationId)
   res.json({message:result})
 })
-
+/* 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
-});
+}); */
+
+export default app
