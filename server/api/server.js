@@ -1,7 +1,7 @@
 
 import express  from 'express'
-import { chatBot } from './chatBot.js';
-import "./config.js" //for env
+import { chatBot } from '../chatBot.js';
+import "../config.js" //for env
 import cors from 'cors'
 
 
